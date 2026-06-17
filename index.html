@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Government Information Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="glass-nav">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>GovPortal</span>
+            </a>
+            <nav class="nav-links" id="navLinks">
+                <a href="#hero" class="active">Home</a>
+                <a href="#quick-services">Services</a>
+                <a href="#schemes-section">Schemes</a>
+                <a href="#directory-section">Directory</a>
+                <a href="#news">News</a>
+                <a href="#faq">FAQs</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <div class="nav-actions">
+                <button id="theme-toggle" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button class="menu-toggle" id="menuToggle" aria-label="Open Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section id="hero" class="hero-section">
+        <div class="hero-content">
+            <h1>Single Window Access to Government Services</h1>
+            <p>Discover national schemes, track official directories, and access essential services instantly.</p>
+            
+            <div class="search-container glass-card">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="main-search" placeholder="Search by scheme, website, ministry, or category...">
+            </div>
+        </div>
+    </section>
+
+    <section id="quick-services" class="container">
+        <h2 class="section-title">Quick Services</h2>
+        <div class="services-grid">
+            <a href="https://uidai.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-id-card"></i>
+                <span>Aadhaar Services</span>
+            </a>
+            <a href="https://www.incometax.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-credit-card"></i>
+                <span>PAN Card</span>
+            </a>
+            <a href="https://passportindia.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-passport"></i>
+                <span>Passport Seva</span>
+            </a>
+            <a href="https://parivahan.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-id-badge"></i>
+                <span>Driving Licence</span>
+            </a>
+            <a href="https://voterportal.eci.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-check-to-slot"></i>
+                <span>Voter ID</span>
+            </a>
+            <a href="https://digilocker.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-vault"></i>
+                <span>DigiLocker</span>
+            </a>
+            <a href="https://pmkisan.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-wheat-awn"></i>
+                <span>PM Kisan</span>
+            </a>
+            <a href="https://pmjay.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>Ayushman Bharat</span>
+            </a>
+            <a href="https://eshram.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-person-digging"></i>
+                <span>e-Shram</span>
+            </a>
+            <a href="https://www.umang.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+                <span>UMANG Portal</span>
+            </a>
+        </div>
+    </section>
+
+    <main class="main-layout container">
+        <aside class="sidebar glass-card">
+            <h3><i class="fa-solid fa-filter"></i> Categories</h3>
+            <ul class="category-list" id="categoryFilter">
+                <li class="active" data-category="all">All Categories</li>
+                <li data-category="Education">Education & Scholarships</li>
+                <li data-category="Agriculture">Agriculture</li>
+                <li data-category="Healthcare">Healthcare</li>
+                <li data-category="Employment">Jobs & Employment</li>
+                <li data-category="Business">Business & Startups</li>
+                <li data-category="Women">Women Empowerment</li>
+                <li data-category="Pension">Pension & Senior Citizens</li>
+                <li data-category="Housing">Housing</li>
+            </ul>
+        </aside>
+
+        <div class="content-area">
+            <section id="schemes-section">
+                <h2 class="section-title">Government Schemes</h2>
+                <div class="cards-grid" id="schemes-grid">
+                    </div>
+            </section>
+
+            <section id="directory-section">
+                <h2 class="section-title">Websites Directory</h2>
+                <div class="cards-grid" id="directory-grid">
+                    </div>
+            </section>
+        </div>
+    </main>
+
+    <section id="news" class="container">
+        <h2 class="section-title">Latest Government News</h2>
+        <div class="news-grid" id="news-container">
+            </div>
+    </section>
+
+    <section id="faq" class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-accordion">
+            <div class="faq-item glass-card">
+                <div class="faq-question">
+                    <h4>How to apply for government schemes?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>You can apply for individual schemes directly through their respective official website portal using the "Visit Website" button provided in each scheme file card, or visit your nearest Common Services Center (CSC).</p>
+                </div>
+            </div>
+            <div class="faq-item glass-card">
+                <div class="faq-question">
+                    <h4>How to check eligibility criteria?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Every scheme listed on our portal highlights basic eligibility rules. Detailed qualifications can be validated on the scheme's formal webpage before initiating registration.</p>
+                </div>
+            </div>
+            <div class="faq-item glass-card">
+                <div class="faq-question">
+                    <h4>What documents are generally required?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Common mandatory documents include an identity proof (Aadhaar Card, Voter ID, Passport), Proof of Address, Income Certification, Passport size photographs, and relevant educational/category documents based on the specific scheme requirements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="container">
+        <h2 class="section-title">Help & Support Desk</h2>
+        <div class="contact-wrapper">
+            <form class="contact-form glass-card" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="message">Your Message / Query</label>
+                    <textarea id="message" rows="4" required placeholder="Type your query here..."></textarea>
+                </div>
+                <button type="submit" class="btn">Submit Query</button>
+            </form>
+
+            <div class="contact-info glass-card">
+                <h3>Official Touchpoints</h3>
+                <p><i class="fa-solid fa-phone"></i> National Helpline: <strong>1800-111-400</strong></p>
+                <p><i class="fa-solid fa-envelope"></i> Email: <strong>support-portal@gov.in</strong></p>
+                <p><i class="fa-solid fa-building"></i> Ministry of Electronics & IT, New Delhi, India</p>
+                <div class="emergency-box">
+                    <h4>Emergency Numbers</h4>
+                    <ul>
+                        <li>National Emergency Number: 112</li>
+                        <li>Women Helpline: 1091</li>
+                        <li>Senior Citizens Line: 14567</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container container">
+            <div class="footer-col">
+                <h4>GovPortal</h4>
+                <p>An integrated search index and reference locator for digital public utility resources across the Government of India.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Important Links</h4>
+                <a href="https://india.gov.in" target="_blank">National Portal of India</a>
+                <a href="https://mygov.in" target="_blank">MyGov Engagement</a>
+                <a href="https://digitalindia.gov.in" target="_blank">Digital India Project</a>
+            </div>
+            <div class="footer-col">
+                <h4>Legal Context</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Hyperlinking Policy</a>
+            </div>
+            <div class="footer-col">
+                <h4>Connect with Us</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 National Information Hub. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <button id="scrollToTop" aria-label="Scroll to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+    <script src="script.js"></script>
+</body>
+</html>
