@@ -1,190 +1,238 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>National Government Schemes Portal | Direct Information</title>
-    <meta name="description" content="Discover, check eligibility, and search central and state government schemes instantly. Verified official directory links.">
-    <!-- Tailwind CSS Engine -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="design.css">
+    <title>National Government Information Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-900 dark:text-slate-100">
+<body>
 
-    <!-- Official Top Bar Guardrail -->
-    <div class="bg-amber-600 text-white text-xs py-2 px-4 text-center font-medium shadow-inner tracking-wide">
-        🇮🇳 Informational Platform: Always verify destination domains end strictly in <span class="underline font-bold">.gov.in</span> or <span class="underline font-bold">.nic.in</span> before sharing metadata.
-    </div>
-
-    <!-- Navigation Core -->
-    <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 dark:bg-slate-900/80 dark:border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-indigo-600 text-white p-2 rounded-xl font-black text-xl shadow-md tracking-wider">GS</div>
-                <div>
-                    <h1 class="text-md font-extrabold tracking-tight" id="nav-title">Government Schemes Portal</h1>
-                    <p class="text-[10px] text-slate-500 font-mono dark:text-slate-400">Official Directory Index</p>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <a href="eligibility.html" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-950/50 dark:hover:bg-indigo-900/50 rounded-xl transition-all">
-                    🎯 <span id="nav-eligibility">Check Eligibility</span>
-                </a>
-                <select id="lang-select" class="bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm font-medium px-2 py-1.5 cursor-pointer focus:ring-2 focus:ring-indigo-500">
-                    <option value="en">English</option>
-                    <option value="hi">हिन्दी</option>
-                </select>
-                <button id="theme-toggle" aria-label="Toggle Layout Contrast" class="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-xl transition-colors text-lg">🌓</button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Content Cluster -->
-    <header class="relative overflow-hidden bg-gradient-to-b from-indigo-50/50 via-transparent to-transparent dark:from-indigo-950/10 py-16 px-4">
-        <div class="max-w-4xl mx-auto text-center">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold text-indigo-700 bg-indigo-100 dark:text-indigo-300 dark:bg-indigo-900/40 rounded-full mb-4">
-                ✨ Centralized Database System
-            </span>
-            <h2 class="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight mb-4" id="hero-title">
-                Discover Public Schemes Instantly
-            </h2>
-            <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-8" id="hero-subtitle">
-                Access simplified parameters, required document check-lists, and direct pathways to official administrative application portals.
-            </p>
-
-            <!-- Search Interface Frame -->
-            <div class="bg-white dark:bg-slate-800 p-2 rounded-2xl shadow-xl border border-slate-200/60 dark:border-slate-700/60 max-w-2xl mx-auto flex flex-col sm:flex-row gap-2">
-                <div class="flex-1 flex items-center px-3 gap-2">
-                    <span class="text-slate-400 text-lg">🔍</span>
-                    <input type="text" id="global-search" placeholder="Type scheme name, ministry, or beneficiary category..." class="w-full bg-transparent border-none py-2 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none text-base">
-                </div>
-                <button id="search-trigger" class="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all transform active:scale-95" id="btn-search">
-                    Search
+    <header class="glass-nav">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>GovPortal</span>
+            </a>
+            <nav class="nav-links" id="navLinks">
+                <a href="#hero" class="active">Home</a>
+                <a href="#quick-services">Services</a>
+                <a href="#schemes-section">Schemes</a>
+                <a href="#directory-section">Directory</a>
+                <a href="#news">News</a>
+                <a href="#faq">FAQs</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <div class="nav-actions">
+                <button id="theme-toggle" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button class="menu-toggle" id="menuToggle" aria-label="Open Menu">
+                    <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Telemetry Counter Aggregations -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 mb-12">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white border border-slate-200 dark:bg-slate-800 dark:border-slate-700 rounded-2xl p-6 shadow-md text-center">
-            <div class="p-4 border-b sm:border-b-0 sm:border-r border-slate-100 dark:border-slate-700">
-                <p class="text-xs uppercase font-bold tracking-widest text-slate-400" id="stat-total">Total Indexed</p>
-                <p class="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-1" id="count-total">0</p>
-            </div>
-            <div class="p-4 border-b sm:border-b-0 sm:border-r border-slate-100 dark:border-slate-700">
-                <p class="text-xs uppercase font-bold tracking-widest text-slate-400" id="stat-central">Central Schemes</p>
-                <p class="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-1" id="count-central">0</p>
-            </div>
-            <div class="p-4 desert-padding">
-                <p class="text-xs uppercase font-bold tracking-widest text-slate-400" id="stat-state">State Managed</p>
-                <p class="text-3xl font-black text-amber-600 dark:text-amber-400 mt-1" id="count-state">0</p>
+    <section id="hero" class="hero-section">
+        <div class="hero-content">
+            <h1>Single Window Access to Government Services</h1>
+            <p>Discover national schemes, track official directories, and access essential services instantly.</p>
+            
+            <div class="search-container glass-card">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="main-search" placeholder="Search by scheme, website, ministry, or category...">
             </div>
         </div>
     </section>
 
-    <!-- Primary Workspace Directory -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-        <div class="flex flex-col lg:flex-row gap-8">
-            
-            <!-- Filters Control Dashboard Sidebar -->
-            <aside class="w-full lg:w-1/4 shrink-0">
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm sticky top-24">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="font-black text-lg tracking-tight" id="filter-heading">Filters Directory</h3>
-                        <button id="filter-reset" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">Reset All</button>
+    <section id="quick-services" class="container">
+        <h2 class="section-title">Quick Services</h2>
+        <div class="services-grid">
+            <a href="https://uidai.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-id-card"></i>
+                <span>Aadhaar Services</span>
+            </a>
+            <a href="https://www.incometax.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-credit-card"></i>
+                <span>PAN Card</span>
+            </a>
+            <a href="https://passportindia.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-passport"></i>
+                <span>Passport Seva</span>
+            </a>
+            <a href="https://parivahan.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-id-badge"></i>
+                <span>Driving Licence</span>
+            </a>
+            <a href="https://voterportal.eci.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-check-to-slot"></i>
+                <span>Voter ID</span>
+            </a>
+            <a href="https://digilocker.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-vault"></i>
+                <span>DigiLocker</span>
+            </a>
+            <a href="https://pmkisan.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-wheat-awn"></i>
+                <span>PM Kisan</span>
+            </a>
+            <a href="https://pmjay.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>Ayushman Bharat</span>
+            </a>
+            <a href="https://eshram.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-person-digging"></i>
+                <span>e-Shram</span>
+            </a>
+            <a href="https://www.umang.gov.in" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+                <span>UMANG Portal</span>
+            </a>
+        </div>
+    </section>
+
+    <main class="main-layout container">
+        <aside class="sidebar glass-card">
+            <h3><i class="fa-solid fa-filter"></i> Categories</h3>
+            <ul class="category-list" id="categoryFilter">
+                <li class="active" data-category="all">All Categories</li>
+                <li data-category="Education">Education & Scholarships</li>
+                <li data-category="Agriculture">Agriculture</li>
+                <li data-category="Healthcare">Healthcare</li>
+                <li data-category="Employment">Jobs & Employment</li>
+                <li data-category="Business">Business & Startups</li>
+                <li data-category="Women">Women Empowerment</li>
+                <li data-category="Pension">Pension & Senior Citizens</li>
+                <li data-category="Housing">Housing</li>
+            </ul>
+        </aside>
+
+        <div class="content-area">
+            <section id="schemes-section">
+                <h2 class="section-title">Government Schemes</h2>
+                <div class="cards-grid" id="schemes-grid">
                     </div>
-
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 tracking-wider mb-2" id="lbl-origin">Administrative Scope</label>
-                            <div class="grid grid-cols-2 gap-2">
-                                <button data-origin="CENTRAL" class="origin-btn p-2 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold transition-all">Central</button>
-                                <button data-origin="STATE" class="origin-btn p-2 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold transition-all">State</button>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 tracking-wider mb-2" id="lbl-state">Specific State Territory</label>
-                            <select id="filter-state" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
-                                <option value="">All States & UTs</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 tracking-wider mb-2" id="lbl-cat">Target Sector</label>
-                            <select id="filter-category" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
-                                <option value="">All Functional Sectors</option>
-                                <option value="Agriculture">Agriculture & Farmers</option>
-                                <option value="Education">Education & Scholarships</option>
-                                <option value="Business">Business & MSME</option>
-                                <option value="Health">Health & Social Welfare</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-
-            <!-- Dynamic Records Canvas -->
-            <section class="flex-1">
-                <div class="flex items-center justify-between mb-6">
-                    <p class="text-sm text-slate-500 font-medium" id="results-meta">Showing all records available</p>
-                </div>
-                
-                <!-- Interactive Destination Grid -->
-                <div id="schemes-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Synthesized JavaScript innerHTML injects cleanly here -->
-                </div>
             </section>
 
+            <section id="directory-section">
+                <h2 class="section-title">Websites Directory</h2>
+                <div class="cards-grid" id="directory-grid">
+                    </div>
+            </section>
         </div>
     </main>
 
-    <!-- Global Compliance Footer Element -->
-    <footer class="bg-white border-t border-slate-200 dark:bg-slate-950 dark:border-slate-800 py-12 px-4">
-        <div class="max-w-7xl mx-auto text-center space-y-4">
-            <p class="text-xs text-slate-400 max-w-3xl mx-auto leading-relaxed" id="footer-disclaimer">
-                Disclaimer: This is an independent informational reference platform not affiliated with or operated by the Government of India. Users are permanently redirected out to authenticated governmental destination systems to transact or verify.
-            </p>
-            <div class="text-[10px] text-slate-500 font-mono">
-                System Standard Node Ref: CO-IN-2026-V1
+    <section id="news" class="container">
+        <h2 class="section-title">Latest Government News</h2>
+        <div class="news-grid" id="news-container">
             </div>
+    </section>
+
+    <section id="faq" class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-accordion">
+            <div class="faq-item glass-card">
+                <div class="faq-question">
+                    <h4>How to apply for government schemes?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>You can apply for individual schemes directly through their respective official website portal using the "Visit Website" button provided in each scheme file card, or visit your nearest Common Services Center (CSC).</p>
+                </div>
+            </div>
+            <div class="faq-item glass-card">
+                <div class="faq-question">
+                    <h4>How to check eligibility criteria?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Every scheme listed on our portal highlights basic eligibility rules. Detailed qualifications can be validated on the scheme's formal webpage before initiating registration.</p>
+                </div>
+            </div>
+            <div class="faq-item glass-card">
+                <div class="faq-question">
+                    <h4>What documents are generally required?</h4>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Common mandatory documents include an identity proof (Aadhaar Card, Voter ID, Passport), Proof of Address, Income Certification, Passport size photographs, and relevant educational/category documents based on the specific scheme requirements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="container">
+        <h2 class="section-title">Help & Support Desk</h2>
+        <div class="contact-wrapper">
+            <form class="contact-form glass-card" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="message">Your Message / Query</label>
+                    <textarea id="message" rows="4" required placeholder="Type your query here..."></textarea>
+                </div>
+                <button type="submit" class="btn">Submit Query</button>
+            </form>
+
+            <div class="contact-info glass-card">
+                <h3>Official Touchpoints</h3>
+                <p><i class="fa-solid fa-phone"></i> National Helpline: <strong>1800-111-400</strong></p>
+                <p><i class="fa-solid fa-envelope"></i> Email: <strong>support-portal@gov.in</strong></p>
+                <p><i class="fa-solid fa-building"></i> Ministry of Electronics & IT, New Delhi, India</p>
+                <div class="emergency-box">
+                    <h4>Emergency Numbers</h4>
+                    <ul>
+                        <li>National Emergency Number: 112</li>
+                        <li>Women Helpline: 1091</li>
+                        <li>Senior Citizens Line: 14567</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container container">
+            <div class="footer-col">
+                <h4>GovPortal</h4>
+                <p>An integrated search index and reference locator for digital public utility resources across the Government of India.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Important Links</h4>
+                <a href="https://india.gov.in" target="_blank">National Portal of India</a>
+                <a href="https://mygov.in" target="_blank">MyGov Engagement</a>
+                <a href="https://digitalindia.gov.in" target="_blank">Digital India Project</a>
+            </div>
+            <div class="footer-col">
+                <h4>Legal Context</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Hyperlinking Policy</a>
+            </div>
+            <div class="footer-col">
+                <h4>Connect with Us</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 National Information Hub. All Rights Reserved.</p>
         </div>
     </footer>
 
-    <!-- Intercepting Verification Security Modal Overlay Container -->
-    <div id="redirect-modal" class="fixed inset-0 z-50 invisible flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 opacity-0 transition-all duration-200">
-        <div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900 transition-transform transform scale-95 duration-200" id="modal-box">
-            <div class="flex items-start gap-3">
-                <div class="p-2 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl text-emerald-600 text-xl">🛡️</div>
-                <div>
-                    <h3 class="text-lg font-black text-slate-900 dark:text-white" id="modal-title">Security Routing Intercept</h3>
-                    <p class="text-xs text-slate-400 mt-0.5">Government Domain Verification Routine</p>
-                </div>
-            </div>
-            
-            <hr class="my-4 border-slate-100 dark:border-slate-800">
-            
-            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed" id="modal-body-text">
-                You are leaving this informational dashboard and being securely routed directly out to the verified public domain infrastructure system:
-            </p>
-            
-            <div id="modal-target-url" class="my-4 rounded-xl bg-slate-50 border border-slate-100 p-3 font-mono text-xs text-emerald-600 dark:bg-slate-950 dark:border-slate-800 dark:text-emerald-400 break-all select-all">
-                https://sample.gov.in
-            </div>
-            
-            <div class="flex items-center justify-between mt-6">
-                <span id="modal-countdown" class="text-xs text-slate-400 font-medium">Auto-navigating in 5 seconds...</span>
-                <div class="flex gap-2">
-                    <button id="modal-cancel" class="rounded-xl bg-slate-100 px-4 py-2 text-xs font-bold text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors">Cancel</button>
-                    <a id="modal-proceed" target="_blank" rel="noopener noreferrer" class="rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white hover:bg-indigo-700 shadow-md transition-all">Proceed Immediately</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <button id="scrollToTop" aria-label="Scroll to top"><i class="fa-solid fa-arrow-up"></i></button>
 
-    <!-- Initialization Execution Logic Script -->
-    <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
