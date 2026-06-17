@@ -1,267 +1,454 @@
-// ==========================================
-// DUMMY DATA STRUCTURES (Simulating API JSON Data)
-// ==========================================
+// script.js - Unified State Management & Controller Engine
 
-const schemesData = [
-    {
-        name: "PM E-Shram Scheme",
-        category: "Employment",
-        ministry: "Ministry of Labour & Employment",
-        description: "National Database of Uncategorized Workers created to provide welfare benefits and social security identification.",
-        eligibility: "Unorganized sector workers aged 16-59 years.",
-        benefits: "Accidental insurance coverage and access to various direct-benefit social relief projects.",
-        link: "https://eshram.gov.in"
-    },
-    {
-        name: "PM-Kisan Samman Nidhi",
-        category: "Agriculture",
-        ministry: "Ministry of Agriculture & Farmers Welfare",
-        description: "An initiative by the government of India that provides an assured minimum income support to all small landholding farmers.",
-        eligibility: "All small and marginal landholding farmer families across the nation.",
-        benefits: "Direct income support of ₹6,000 per year in three equal instalments.",
-        link: "https://pmkisan.gov.in"
-    },
-    {
-        name: "Ayushman Bharat (PM-JAY)",
-        category: "Healthcare",
-        ministry: "Ministry of Health & Family Welfare",
-        description: "The largest health assurance scheme in the world aiming to provide free secondary and tertiary healthcare coverage.",
-        eligibility: "Identified poor, vulnerable families based on SECC census criteria.",
-        benefits: "Health cover of ₹5 Lakhs per family per year for secondary and tertiary hospitalizations.",
-        link: "https://pmjay.gov.in"
-    },
-    {
-        name: "Pradhan Mantri Mudra Yojana",
-        category: "Business",
-        ministry: "Ministry of Finance",
-        description: "Provides loans to non-corporate, non-farm small/micro enterprises to scale and fund local entrepreneurial activity.",
-        eligibility: "Any Indian citizen with a legitimate business plan for a non-farm income-generating activity.",
-        benefits: "Collateral-free business development loans up to ₹10 Lakhs categorized under Shishu, Kishor, and Tarun classes.",
-        link: "https://www.mudra.org.in"
-    },
-    {
-        name: "Post Matric Scholarship Scheme",
-        category: "Education",
-        ministry: "Ministry of Social Justice & Empowerment",
-        description: "Financial assistance provided to marginalized students to pursue higher secondary education post matriculation.",
-        eligibility: "Students belonging to scheduled or socio-economically backwards statuses with low parental household income.",
-        benefits: "Complete coverage of non-refundable tuition fees and maintenance allowance payments.",
-        link: "https://scholarships.gov.in"
-    },
-    {
-        name: "Pradhan Mantri Awas Yojana",
-        category: "Housing",
-        ministry: "Ministry of Housing and Urban Affairs",
-        description: "An initiative intended to provide affordable housing to the urban and rural poor with an emphasis on sustainable infrastructure.",
-        eligibility: "Families without an all-weather permanent house or falling within specific economic metrics.",
-        benefits: "Subsidies on home purchase loan interest rates ranging up to ₹2.67 lakhs.",
-        link: "https://pmaymis.gov.in"
+document.addEventListener("DOMContentLoaded", () => {
+  // Application State Matrix Engine
+  const State = {
+    allSchemes: [...schemesData],
+    activeFilterCategory: "All",
+    activeFilterState: "Central Government",
+    activeViewTab: "all", // all, featured, trending, saved
+    savedBookmarks: JSON.parse(localStorage.getItem("gov_portal_saved")) || [],
+    theme: localStorage.getItem("gov_portal_theme") || "light",
+    searchQuery: ""
+  };
+
+  // Live App Notifications Queue Stack Array
+  const systemNotifications = [
+    { id: 1, title: "New Agriculture Subsidy Added", time: "10 mins ago" },
+    { id: 2, title: "UP Scholarship Submission Deadline Extended", time: "2 hours ago" },
+    { id: 3, title: "System Operational updates completed successfully", time: "1 day ago" }
+  ];
+
+  // DOM Query Engine Target Selectors
+  const nodes = {
+    cardContainer: document.getElementById("schemes-card-container"),
+    skeletonContainer: document.getElementById("schemes-skeleton-container"),
+    noResults: document.getElementById("no-results"),
+    stateSelector: document.getElementById("state-select-filter"),
+    categoryPills: document.getElementById("category-pills-container"),
+    smartSearch: document.getElementById("smart-search"),
+    autocompleteBox: document.getElementById("autocomplete-box"),
+    themeToggle: document.getElementById("theme-toggle"),
+    notifToggle: document.getElementById("notif-toggle"),
+    notifDrawer: document.getElementById("notif-drawer"),
+    closeNotif: document.getElementById("close-notif"),
+    notifItems: document.getElementById("notif-items"),
+    faqTarget: document.getElementById("faq-accordion-target"),
+    faqSearch: document.getElementById("faq-search-input"),
+    eligState: document.getElementById("elig-state"),
+    btnRunChecker: document.getElementById("btn-run-checker"),
+    eligForm: document.getElementById("eligibility-form"),
+    scrollTopFab: document.getElementById("scroll-top-fab"),
+    toastSystem: document.getElementById("toast-notification-system"),
+    clearSearch: document.getElementById("clear-search")
+  };
+
+  // Initialize System Core Framework Pipelines
+  const initializePortal = () => {
+    setupThemeEnvironment();
+    populateDropdownFilters();
+    renderCategoryPills();
+    renderSchemesGrid();
+    renderFaqAccordion(faqData);
+    setupLiveAlertDrawer();
+    attachGlobalEventHandlers();
+  };
+
+  // Theme Management Engine Pipeline
+  const setupThemeEnvironment = () => {
+    if (State.theme === "dark" || (State.theme === "light" && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+      document.documentElement.setAttribute("data-theme", "dark");
+      nodes.themeToggle.innerHTML = `<span class="material-icons-round">light_mode</span>`;
     }
-];
+  };
 
-const directoryData = [
-    { name: "india.gov.in", description: "The single-window lookup access to services and data updates distributed across all Indian public sector bodies.", url: "https://india.gov.in" },
-    { name: "mygov.in", description: "Citizen engagement and crowdsourcing digital system allowing the public to advise and interface with core governance projects.", url: "https://mygov.in" },
-    { name: "uidai.gov.in", description: "Official online operational structure for the Unique Identification Authority of India running identity issuance frameworks.", url: "https://uidai.gov.in" },
-    { name: "digilocker.gov.in", description: "Secure cloud filing environment for issuance, physical validation, and systemic tracking of vital authentic digital records.", url: "https://digilocker.gov.in" },
-    { name: "passportindia.gov.in", description: "The web workspace designed to facilitate quick application scheduling and tracking for global travel documents.", url: "https://passportindia.gov.in" }
-];
-
-const newsData = [
-    { headline: "Digital India Phase Expansion Approved", date: "June 15, 2026", ministry: "Ministry of Electronics & IT", text: "New financial allocations cleared to extend rural broadband fiber infrastructure networks across all remote tier-3 sectors." },
-    { headline: "New Agri-Tech Fund Launched for Startups", date: "June 12, 2026", ministry: "Ministry of Agriculture", text: "A funding framework established to promote remote drone surveillance and AI mapping systems in sustainable farming operations." }
-];
-
-// ==========================================
-// RENDERING ENGINES
-// ==========================================
-
-function displaySchemes(schemes) {
-    const grid = document.getElementById('schemes-grid');
-    grid.innerHTML = schemes.length ? '' : `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">No schemes match your criteria.</p>`;
-    
-    schemes.forEach(scheme => {
-        const card = document.createElement('div');
-        card.className = 'card glass-card';
-        card.innerHTML = `
-            <span class="category-tag">${scheme.category}</span>
-            <h3>${scheme.name}</h3>
-            <span class="ministry-tag">${scheme.ministry}</span>
-            <p>${scheme.description}</p>
-            <div class="details-box">
-                <strong>Eligibility:</strong> ${scheme.eligibility}<br><br>
-                <strong>Benefits:</strong> ${scheme.benefits}
-            </div>
-            <a href="${scheme.link}" target="_blank" class="btn">Visit Website <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-function displayDirectory(sites) {
-    const grid = document.getElementById('directory-grid');
-    grid.innerHTML = sites.length ? '' : `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">No matching platforms found.</p>`;
-    
-    sites.forEach(site => {
-        const initial = site.name.charAt(0).toUpperCase();
-        const card = document.createElement('div');
-        card.className = 'card glass-card';
-        card.innerHTML = `
-            <div class="directory-logo">${initial}</div>
-            <h3>${site.name}</h3>
-            <p>${site.description}</p>
-            <a href="${site.url}" target="_blank" class="btn">Open Platform</a>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-function displayNews() {
-    const container = document.getElementById('news-container');
-    container.innerHTML = '';
-    newsData.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'news-card glass-card';
-        div.innerHTML = `
-            <div class="news-meta"><span>${item.date}</span><span>${item.ministry}</span></div>
-            <h3>${item.headline}</h3>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin: 10px 0 15px;">${item.text}</p>
-            <a href="#" class="btn" style="padding: 6px 12px; font-size: 0.85rem;">Read More</a>
-        `;
-        container.appendChild(div);
-    });
-}
-
-// ==========================================
-// LIVE SEARCH & FILTER CONTROLLER
-// ==========================================
-
-function filterContent() {
-    const searchInput = document.getElementById('main-search');
-    const clearBtn = document.getElementById('clear-search');
-    const previewDisplay = document.getElementById('search-preview-display');
-    
-    const searchQuery = searchInput.value.toLowerCase().trim();
-    const rawSearchValue = searchInput.value; // Keeps capitalization intact for display
-    const activeCategory = document.querySelector('#categoryFilter .active').getAttribute('data-category');
-
-    // Toggle Clear Button Visibility
-    clearBtn.style.display = searchQuery.length > 0 ? 'block' : 'none';
-
-    // 1. Live Filter Calculations
-    const filteredSchemes = schemesData.filter(scheme => {
-        const matchesSearch = scheme.name.toLowerCase().includes(searchQuery) ||
-                              scheme.ministry.toLowerCase().includes(searchQuery) ||
-                              scheme.category.toLowerCase().includes(searchQuery) ||
-                              scheme.description.toLowerCase().includes(searchQuery);
-        
-        const matchesCategory = (activeCategory === 'all') || 
-                                (scheme.category.toLowerCase() === activeCategory.toLowerCase());
-        
-        return matchesSearch && matchesCategory;
-    });
-
-    const filteredDirectory = directoryData.filter(site => {
-        return site.name.toLowerCase().includes(searchQuery) || 
-               site.description.toLowerCase().includes(searchQuery);
-    });
-
-    // 2. Real-time Search Preview Display Engine
-    const totalMatches = filteredSchemes.length + filteredDirectory.length;
-    
-    if (searchQuery.length > 0) {
-        previewDisplay.innerHTML = `
-            <div class="search-monitor-banner glass-card">
-                <p>
-                    <i class="fa-solid fa-keyboard" style="margin-right: 8px; opacity: 0.7;"></i>
-                    Active Search: <span class="live-term">"${rawSearchValue}"</span>
-                </p>
-                <span class="match-badge">${totalMatches} results found</span>
-            </div>
-        `;
+  const toggleThemeMode = () => {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    if (currentTheme === "dark") {
+      document.documentElement.removeAttribute("data-theme");
+      localStorage.setItem("gov_portal_theme", "light");
+      nodes.themeToggle.innerHTML = `<span class="material-icons-round">dark_mode</span>`;
+      triggerToast("Switched to Light Mode");
     } else {
-        previewDisplay.innerHTML = ''; // Collapse cleanly if input is cleared
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.setItem("gov_portal_theme", "dark");
+      nodes.themeToggle.innerHTML = `<span class="material-icons-round">light_mode</span>`;
+      triggerToast("Switched to Dark Mode");
+    }
+  };
+
+  // Dropdown Filtration Dynamic Initialization pipeline
+  const populateDropdownFilters = () => {
+    indianStates.forEach(stateName => {
+      const optionElementHTML = `<option value="${stateName}">${stateName}</option>`;
+      nodes.stateSelector.insertAdjacentHTML("beforeend", optionElementHTML);
+      nodes.eligState.insertAdjacentHTML("beforeend", optionElementHTML);
+    });
+  };
+
+  // Render Pill Categorization Engine
+  const renderCategoryPills = () => {
+    nodes.categoryPills.innerHTML = "";
+    categoriesData.forEach(cat => {
+      const isActive = cat === State.activeFilterCategory ? "active" : "";
+      const buttonHTML = `<button class="category-pill-btn ${isActive}" data-category="${cat}">${cat}</button>`;
+      nodes.categoryPills.insertAdjacentHTML("beforeend", buttonHTML);
+    });
+  };
+
+  // Core Algorithmic Grid Filtering and Logic Matrix Rendering Output Engine
+  const renderSchemesGrid = () => {
+    // Reveal native Skeleton framework during structural manipulation
+    nodes.cardContainer.classList.add("hidden-element");
+    nodes.skeletonContainer.classList.remove("hidden-element");
+    nodes.noResults.classList.add("hidden-element");
+
+    setTimeout(() => {
+      let filteredDataList = State.allSchemes.filter(scheme => {
+        // Evaluate State Filter Category Metrics
+        const matchesState = (State.activeFilterState === "Central Government") ? true : (scheme.state === State.activeFilterState || scheme.state === "Central Government");
+        // Evaluate Pill Category
+        const matchesCategory = (State.activeFilterCategory === "All") ? true : (scheme.category === State.activeFilterCategory);
+        // Evaluate Text Query Substring Indexes
+        const matchesSearch = State.searchQuery === "" ? true : (
+          scheme.name.toLowerCase().includes(State.searchQuery) ||
+          scheme.description.toLowerCase().includes(State.searchQuery) ||
+          scheme.category.toLowerCase().includes(State.searchQuery)
+        );
+        
+        return matchesState && matchesCategory && matchesSearch;
+      });
+
+      // Filter by sub views (Tabs processing)
+      if (State.activeViewTab === "featured") filteredDataList = filteredDataList.filter(s => s.featured);
+      if (State.activeViewTab === "trending") filteredDataList = filteredDataList.filter(s => s.trending);
+      if (State.activeViewTab === "saved") filteredDataList = filteredDataList.filter(s => State.savedBookmarks.includes(s.id));
+
+      // Destroy Skeletons
+      nodes.skeletonContainer.classList.add("hidden-element");
+      nodes.cardContainer.classList.remove("hidden-element");
+
+      if (filteredDataList.length === 0) {
+        nodes.noResults.classList.remove("hidden-element");
+        nodes.cardContainer.innerHTML = "";
+        return;
+      }
+
+      nodes.cardContainer.innerHTML = "";
+      filteredDataList.forEach(scheme => {
+        const isSaved = State.savedBookmarks.includes(scheme.id);
+        const cardHTML = `
+          <article class="scheme-card glass" id="card-${scheme.id}">
+            <div class="card-top-meta">
+              <div class="badge-stack">
+                <span class="badge-tag primary">${scheme.category}</span>
+                <span class="badge-tag state">${scheme.state}</span>
+                <span class="badge-tag gov-official"><span class="material-icons-round" style="font-size:12px;vertical-align:middle;">verified</span> Official Vendor</span>
+              </div>
+              <div class="card-actions-wrapper">
+                <button class="icon-btn bookmark-action-trigger" data-id="${scheme.id}" aria-label="Save Scheme">
+                  <span class="material-icons-round">${isSaved ? 'bookmark' : 'bookmark_border'}</span>
+                </button>
+              </div>
+            </div>
+            
+            <h3 class="card-title">${scheme.name}</h3>
+            <p class="card-ministry">${scheme.ministry}</p>
+            <p class="card-description">${scheme.description}</p>
+            
+            <div class="expandable-data-matrix">
+              <div class="matrix-row"><strong>Eligibility:</strong> Age ${scheme.eligibility.ageMin}+ | Income limit below ₹${scheme.eligibility.maxIncome === Infinity ? "No Limit" : scheme.eligibility.maxIncome.toLocaleString('en-IN')}</div>
+              <div class="matrix-row"><strong>Benefits:</strong> ${scheme.benefits}</div>
+              <div class="matrix-row"><strong>Documents Needed:</strong> ${scheme.documents.join(", ")}</div>
+              <div class="matrix-row" style="margin-top:8px; font-size:11px; color:var(--text-muted);">Last Updated Data Pipeline: ${scheme.lastUpdated}</div>
+            </div>
+
+            <div class="card-bottom-button-strip">
+              <a href="${scheme.officialWebsite}" target="_blank" rel="noopener noreferrer" class="primary-action-btn ripple" data-id="${scheme.id}">
+                Apply Now <span class="material-icons-round">open_in_new</span>
+              </a>
+              <div style="display:flex; gap:6px;">
+                <button class="secondary-btn share-trigger" data-id="${scheme.id}"><span class="material-icons-round">share</span> Share</button>
+                <button class="secondary-btn broken-link-trigger" data-url="${scheme.officialWebsite}"><span class="material-icons-round">report</span> Report Link</button>
+              </div>
+            </div>
+          </article>
+        `;
+        nodes.cardContainer.insertAdjacentHTML("beforeend", cardHTML);
+      });
+    }, 400); // UI micro-delay layout simulator for fluid structural loading visual stability
+  };
+
+  // Frequently Asked Questions Searchable Engine Logic 
+  const renderFaqAccordion = (dataMatrix) => {
+    nodes.faqTarget.innerHTML = "";
+    dataMatrix.forEach((faqItem, idx) => {
+      const faqHTML = `
+        <div class="faq-item-wrapper" id="faq-item-${idx}">
+          <button class="faq-trigger-btn" data-index="${idx}">
+            ${faqItem.q}
+            <span class="material-icons-round collapse-icon">expand_more</span>
+          </button>
+          <div class="faq-answer-panel">
+            <p>${faqItem.a}</p>
+          </div>
+        </div>
+      `;
+      nodes.faqTarget.insertAdjacentHTML("beforeend", faqHTML);
+    });
+  };
+
+  // Debounced Real-time Search Engine Input Logic Infrastructure
+  let searchDebounceTimer;
+  const handleLiveSearchProcessing = (e) => {
+    clearTimeout(searchDebounceTimer);
+    const value = e.target.value.trim().toLowerCase();
+    State.searchQuery = value;
+
+    if (value.length > 0) {
+      nodes.clearSearch.classList.remove("hidden-element");
+      // Populate and trigger autocomplete menu dropdown suggestions
+      const suggestions = State.allSchemes.filter(s => s.name.toLowerCase().includes(value)).slice(0, 4);
+      if (suggestions.length > 0) {
+        nodes.autocompleteBox.classList.remove("hidden-element");
+        nodes.autocompleteBox.innerHTML = suggestions.map(s => `
+          <div class="autocomplete-item" data-name="${s.name}">
+            <span>${s.name.substring(0, 45)}...</span>
+            <span style="font-size:11px;color:var(--text-muted); font-weight:700;">${s.category}</span>
+          </div>
+        `).join("");
+      } else {
+        nodes.autocompleteBox.classList.add("hidden-element");
+      }
+    } else {
+      nodes.clearSearch.classList.add("hidden-element");
+      nodes.autocompleteBox.classList.add("hidden-element");
     }
 
-    // 3. Render Results Grid UI
-    renderHighlightedSchemes(filteredSchemes, searchQuery);
-    renderHighlightedDirectory(filteredDirectory, searchQuery);
-}
+    searchDebounceTimer = setTimeout(() => {
+      renderSchemesGrid();
+    }, 250);
+  };
 
-    displaySchemes(filteredSchemes);
-    displayDirectory(filteredDirectory);
-}
+  // Smart Complex Eligibility Diagnostic Processing Rules Engine Pipeline Execution
+  const processEligibilityMatrixCalculation = () => {
+    const diagnosticAge = parseInt(document.getElementById("elig-age").value, 10);
+    const diagnosticGender = document.getElementById("elig-gender").value;
+    const diagnosticState = nodes.eligState.value;
+    const diagnosticIncome = parseFloat(document.getElementById("elig-income").value) || 0;
+    const diagnosticIsStudent = document.getElementById("elig-student").checked;
+    const diagnosticIsFarmer = document.getElementById("elig-farmer").checked;
 
-// ==========================================
-// INTERFACE EVENT LISTENERS
-// ==========================================
+    // Filter through criteria definitions
+    let computationalMatches = State.allSchemes.filter(scheme => {
+      const criteria = scheme.eligibility;
+      
+      // Check structural profile inputs
+      if (diagnosticAge < criteria.ageMin || diagnosticAge > criteria.ageMax) return false;
+      if (criteria.gender !== "All" && criteria.gender !== diagnosticGender) return false;
+      if (diagnosticIncome > criteria.maxIncome) return false;
+      if (criteria.isFarmer && !diagnosticIsFarmer) return false;
+      if (criteria.isStudent && !diagnosticIsStudent) return false;
+      
+      // Match boundaries
+      if (criteria.allowedStates !== "Central Government" && !criteria.allowedStates.includes(diagnosticState)) return false;
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Initial Render
-    displaySchemes(schemesData);
-    displayDirectory(directoryData);
-    displayNews();
-
-    // Live Search Trigger
-    document.getElementById('main-search').addEventListener('input', filterContent);
-
-    // Sidebar Category Filter Trigger
-    const categories = document.querySelectorAll('#categoryFilter li');
-    categories.forEach(item => {
-        item.addEventListener('click', () => {
-            categories.forEach(c => c.classList.remove('active'));
-            item.classList.add('active');
-            filterContent();
-        });
+      return true;
     });
 
-    // Dark/Light Theme Switching Engine
-    const themeToggle = document.getElementById('theme-toggle');
-    themeToggle.addEventListener('click', () => {
-        const currentTheme = document.body.getAttribute('data-theme');
-        if (currentTheme === 'dark') {
-            document.body.removeAttribute('data-theme');
-            themeToggle.innerHTML = `<i class="fa-solid fa-moon"></i>`;
+    // Directly present result array output metrics onto user context
+    State.activeFilterCategory = "All";
+    State.activeFilterState = diagnosticState;
+    renderCategoryPills();
+    nodes.stateSelector.value = diagnosticState;
+    
+    // Smooth scroll down to interactive viewport grid element boundaries
+    document.getElementById("schemes-section").scrollIntoView({ behavior: "smooth" });
+    
+    // Inject matches directly into interface views
+    triggerToast(`Analysis Complete: Found ${computationalMatches.length} Matching Profiles.`);
+    
+    // Force view mapping filter overwrite
+    State.activeViewTab = "all";
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById("tab-all").classList.add("active");
+    
+    // Render transient calculation matches
+    State.allSchemes = computationalMatches.length > 0 ? computationalMatches : [...schemesData];
+    renderSchemesGrid();
+    State.allSchemes = [...schemesData]; // Restore dynamic integrity mapping state
+  };
+
+  // Direct Social Web Sharing integration layers
+  const executeSocialShareRoutine = (schemeId) => {
+    const nativeSchemeObject = State.allSchemes.find(s => s.id === schemeId);
+    if (!nativeSchemeObject) return;
+
+    const pipelineSharePayload = {
+      title: nativeSchemeObject.name,
+      text: `Check out this government scheme: ${nativeSchemeObject.name}. Verified access link available here.`,
+      url: nativeSchemeObject.officialWebsite
+    };
+
+    if (navigator.share) {
+      navigator.share(pipelineSharePayload)
+        .then(() => triggerToast("Shared Successfully"))
+        .catch(() => copyToClipboardFallback(pipelineSharePayload.url));
+    } else {
+      copyToClipboardFallback(pipelineSharePayload.url);
+    }
+  };
+
+  const copyToClipboardFallback = (textUrl) => {
+    navigator.clipboard.writeText(textUrl).then(() => {
+      triggerToast("Link copied to clipboard storage!");
+    });
+  };
+
+  // Toast System Micro-Notification Alert triggers
+  const triggerToast = (msgString) => {
+    const toastNode = document.createElement("div");
+    toastNode.className = "toast";
+    toastNode.innerHTML = `<span class="material-icons-round">info</span> <span>${msgString}</span>`;
+    nodes.toastSystem.appendChild(toastNode);
+    setTimeout(() => { toastNode.remove(); }, 3000);
+  };
+
+  // Setup Notification Drawer system arrays mapping
+  const setupLiveAlertDrawer = () => {
+    nodes.notifItems.innerHTML = systemNotifications.map(n => `
+      <div class="notif-item">
+        <strong>${n.title}</strong>
+        <p style="color:var(--text-muted); font-size:11px; margin-top:2px;">${n.time}</p>
+      </div>
+    `).join("");
+  };
+
+  // Event Handlers Setup Module Function Layer
+  const attachGlobalEventHandlers = () => {
+    // Theme Switch Click Handler
+    nodes.themeToggle.addEventListener("click", toggleThemeMode);
+
+    // Live Selector state processing filters
+    nodes.stateSelector.addEventListener("change", (e) => {
+      State.activeFilterState = e.target.value;
+      renderSchemesGrid();
+    });
+
+    // Pill Category Processing Filters Click Event Bubble Delegations
+    nodes.categoryPills.addEventListener("click", (e) => {
+      const targetBtn = e.target.closest(".category-pill-btn");
+      if (!targetBtn) return;
+      document.querySelectorAll(".category-pill-btn").forEach(p => p.classList.remove("active"));
+      targetBtn.classList.add("active");
+      State.activeFilterCategory = targetBtn.dataset.category;
+      renderSchemesGrid();
+    });
+
+    // Dashboard Views Layout Sub-Tab Toggles
+    document.querySelectorAll(".tab-btn").forEach(tab => {
+      tab.addEventListener("click", (e) => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        e.target.classList.add("active");
+        State.activeViewTab = e.target.id.replace("tab-", "");
+        renderSchemesGrid();
+      });
+    });
+
+    // Live Search Keyup input hooks binding
+    nodes.smartSearch.addEventListener("input", handleLiveSearchProcessing);
+    
+    // Autocomplete dropdown execution mapping click interception
+    nodes.autocompleteBox.addEventListener("click", (e) => {
+      const item = e.target.closest(".autocomplete-item");
+      if (!item) return;
+      nodes.smartSearch.value = item.dataset.name;
+      State.searchQuery = item.dataset.name.toLowerCase();
+      nodes.autocompleteBox.classList.add("hidden-element");
+      renderSchemesGrid();
+    });
+
+    // Clear Search Input Button Element action intercept
+    nodes.clearSearch.addEventListener("click", () => {
+      nodes.smartSearch.value = "";
+      State.searchQuery = "";
+      nodes.clearSearch.classList.add("hidden-element");
+      nodes.autocompleteBox.classList.add("hidden-element");
+      renderSchemesGrid();
+    });
+
+    // Scheme card operational structural clicks routing (Event Delegation Model Framework)
+    nodes.cardContainer.addEventListener("click", (e) => {
+      const bookmarkBtn = e.target.closest(".bookmark-action-trigger");
+      const shareBtn = e.target.closest(".share-trigger");
+      const reportBtn = e.target.closest(".broken-link-trigger");
+
+      if (bookmarkBtn) {
+        const id = bookmarkBtn.dataset.id;
+        if (State.savedBookmarks.includes(id)) {
+          State.savedBookmarks = State.savedBookmarks.filter(item => item !== id);
+          bookmarkBtn.querySelector("span").innerText = "bookmark_border";
+          triggerToast("Removed from Bookmarks");
         } else {
-            document.body.setAttribute('data-theme', 'dark');
-            themeToggle.innerHTML = `<i class="fa-solid fa-sun"></i>`;
+          State.savedBookmarks.push(id);
+          bookmarkBtn.querySelector("span").innerText = "bookmark";
+          triggerToast("Added to Bookmarks Portfolio");
         }
+        localStorage.setItem("gov_portal_saved", JSON.stringify(State.savedBookmarks));
+        if (State.activeViewTab === "saved") renderSchemesGrid();
+      }
+
+      if (shareBtn) {
+        executeSocialShareRoutine(shareBtn.dataset.id);
+      }
+
+      if (reportBtn) {
+        triggerToast("Broken URL link logged successfully. Ministry redirect fallback routing initialized.");
+        window.open("https://india.gov.in", "_blank");
+      }
     });
 
-    // Mobile Navigation Slide Drawer Toggle
-    const menuToggle = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navLinks');
-    menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
+    // Action Execution Button for Questionnaire Eligibility Diagnostic Profile Analysis Processing
+    nodes.btnRunChecker.addEventListener("click", processEligibilityMatrixCalculation);
+
+    // Searchable FAQ Expandable Accordion trigger Interception mechanics routing
+    nodes.faqTarget.addEventListener("click", (e) => {
+      const trigger = e.target.closest(".faq-trigger-btn");
+      if (!trigger) return;
+      const parentWrapperElement = trigger.closest(".faq-item-wrapper");
+      const stateBeforeClickExpanded = parentWrapperElement.classList.contains("expanded");
+      
+      document.querySelectorAll(".faq-item-wrapper").forEach(item => item.classList.remove("expanded"));
+      if (!stateBeforeClickExpanded) {
+        parentWrapperElement.classList.add("expanded");
+      }
     });
 
-    // Accordion Expansion Mechanics
-    const faqItems = document.querySelectorAll('.faq-item');
-    faqItems.forEach(item => {
-        item.querySelector('.faq-question').addEventListener('click', () => {
-            const isOpen = item.classList.contains('open');
-            faqItems.forEach(i => i.classList.remove('open'));
-            if (!isOpen) item.classList.add('open');
-        });
+    // Instant filter mapping interface lookup for operational text search inside FAQs
+    nodes.faqSearch.addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      const filteredFaqs = faqData.filter(f => f.q.toLowerCase().includes(query) || f.a.toLowerCase().includes(query));
+      renderFaqAccordion(filteredFaqs);
     });
 
-    // Scroll To Top Execution Node
-    const topBtn = document.getElementById('scrollToTop');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            topBtn.classList.add('show');
-        } else {
-            topBtn.classList.remove('show');
-        }
-    });
-    topBtn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    // In-app Alerts and Notification Panel Drawer Intercept handlers setup
+    nodes.notifToggle.addEventListener("click", () => nodes.notifDrawer.classList.toggle("hidden"));
+    nodes.closeNotif.addEventListener("click", () => nodes.notifDrawer.classList.add("hidden"));
+
+    // Global Scroll monitoring viewport handler execution hook layer configuration
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 400) {
+        nodes.scrollTopFab.classList.remove("hidden-element");
+      } else {
+        nodes.scrollTopFab.classList.add("hidden-element");
+      }
     });
 
-    // Handle Dummy Contact Form Submission
-    document.getElementById('contactForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('Thank you! Your query has been logged successfully inside our placeholder context.');
-        e.target.reset();
+    nodes.scrollTopFab.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
+  };
+
+  // Instantiation structural triggering execute step
+  initializePortal();
 });
