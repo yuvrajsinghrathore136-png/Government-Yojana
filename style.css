@@ -177,27 +177,57 @@ body {
     margin-bottom: 40px;
 }
 
-.search-container {
-    max-width: 700px;
-    margin: 0 auto;
+/* Real-time Search Display Banner */
+.search-monitor-banner {
     display: flex;
     align-items: center;
-    padding: 12px 25px;
+    justify-content: space-between;
+    padding: 15px 25px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, rgba(11, 76, 162, 0.15), rgba(255, 255, 255, 0.4));
+    border-left: 5px solid var(--accent-blue);
+    animation: slideDownFade 0.4s ease-out forwards;
 }
 
-.search-icon {
-    font-size: 1.2rem;
-    color: var(--text-muted);
-    margin-right: 15px;
+[data-theme="dark"] .search-monitor-banner {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(30, 41, 59, 0.4));
+    border-left: 5px solid var(--accent-blue);
 }
 
-.search-container input {
-    width: 100%;
-    border: none;
-    background: transparent;
+.search-monitor-banner p {
     font-size: 1.1rem;
     color: var(--text-color);
-    outline: none;
+    margin: 0;
+}
+
+.search-monitor-banner .live-term {
+    font-weight: 700;
+    color: var(--accent-blue);
+    background: rgba(255, 255, 255, 0.5);
+    padding: 2px 8px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.search-monitor-banner .match-badge {
+    background: var(--navy-blue);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Slide Down Entry Animation */
+@keyframes slideDownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* --- Quick Services --- */

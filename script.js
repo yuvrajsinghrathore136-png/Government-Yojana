@@ -137,14 +137,23 @@ function displayNews() {
 // ==========================================
 
 function filterContent() {
-    const searchQuery = document.getElementById('main-search').value.toLowerCase();
+    const searchInput = document.getElementById('main-search');
+    const clearBtn = document.getElementById('clear-search');
+    const previewDisplay = document.getElementById('search-preview-display');
+    
+    const searchQuery = searchInput.value.toLowerCase().trim();
+    const rawSearchValue = searchInput.value; // Keeps capitalization intact for display
     const activeCategory = document.querySelector('#categoryFilter .active').getAttribute('data-category');
 
-    // Filter Schemes
+    // Toggle Clear Button Visibility
+    clearBtn.style.display = searchQuery.length > 0 ? 'block' : 'none';
+
+    // 1. Live Filter Calculations
     const filteredSchemes = schemesData.filter(scheme => {
         const matchesSearch = scheme.name.toLowerCase().includes(searchQuery) ||
                               scheme.ministry.toLowerCase().includes(searchQuery) ||
-                              scheme.category.toLowerCase().includes(searchQuery);
+                              scheme.category.toLowerCase().includes(searchQuery) ||
+                              scheme.description.toLowerCase().includes(searchQuery);
         
         const matchesCategory = (activeCategory === 'all') || 
                                 (scheme.category.toLowerCase() === activeCategory.toLowerCase());
@@ -152,10 +161,32 @@ function filterContent() {
         return matchesSearch && matchesCategory;
     });
 
-    // Filter Directory
     const filteredDirectory = directoryData.filter(site => {
-        return site.name.toLowerCase().includes(searchQuery) || site.description.toLowerCase().includes(searchQuery);
+        return site.name.toLowerCase().includes(searchQuery) || 
+               site.description.toLowerCase().includes(searchQuery);
     });
+
+    // 2. Real-time Search Preview Display Engine
+    const totalMatches = filteredSchemes.length + filteredDirectory.length;
+    
+    if (searchQuery.length > 0) {
+        previewDisplay.innerHTML = `
+            <div class="search-monitor-banner glass-card">
+                <p>
+                    <i class="fa-solid fa-keyboard" style="margin-right: 8px; opacity: 0.7;"></i>
+                    Active Search: <span class="live-term">"${rawSearchValue}"</span>
+                </p>
+                <span class="match-badge">${totalMatches} results found</span>
+            </div>
+        `;
+    } else {
+        previewDisplay.innerHTML = ''; // Collapse cleanly if input is cleared
+    }
+
+    // 3. Render Results Grid UI
+    renderHighlightedSchemes(filteredSchemes, searchQuery);
+    renderHighlightedDirectory(filteredDirectory, searchQuery);
+}
 
     displaySchemes(filteredSchemes);
     displayDirectory(filteredDirectory);
