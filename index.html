@@ -1,244 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>National Government Schemes Portal</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Government Schemes Portal | Direct Information</title>
+    <meta name="description" content="Discover, check eligibility, and search central and state government schemes instantly. Verified official directory links.">
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="design.css">
 </head>
-<body>
+<body class="bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-900 dark:text-slate-100">
 
-  <div class="announcement-bar" role="alert">
-    <span class="badge">UPDATED</span>
-    <p>New Direct Benefit Transfer (DBT) Guidelines for fiscal year 2026-27 are now live.</p>
-  </div>
-
-  <header class="main-header">
-    <div class="container nav-container">
-      <div class="logo-area">
-        <span class="material-icons-round emg-emblem">account_balance</span>
-        <div>
-          <h1>SchemesGov</h1>
-          <span class="sub-logo">Independent National Informational Engine</span>
-        </div>
-      </div>
-      
-      <nav class="desktop-nav" aria-label="Main Navigation">
-        <a href="#hero" class="active">Home</a>
-        <a href="#schemes-section">All Schemes</a>
-        <a href="#eligibility-section">Eligibility Checker</a>
-        <a href="#faq-section">FAQs</a>
-      </nav>
-
-      <div class="action-controls">
-        <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
-          <span class="material-icons-round">dark_mode</span>
-        </button>
-        <button id="notif-toggle" class="icon-btn relative" aria-label="Notifications">
-          <span class="material-icons-round">notifications</span>
-          <span class="notif-badge"></span>
-        </button>
-        <button id="mobile-menu-btn" class="icon-btn mobile-only" aria-label="Open Menu">
-          <span class="material-icons-round">menu</span>
-        </button>
-      </div>
+    <!-- Official Top Bar Guardrail -->
+    <div class="bg-amber-600 text-white text-xs py-2 px-4 text-center font-medium shadow-inner tracking-wide">
+        🇮🇳 Informational Platform: Always verify destination domains end strictly in <span class="underline font-bold">.gov.in</span> or <span class="underline font-bold">.nic.in</span> before sharing metadata.
     </div>
-  </header>
 
-  <div id="notif-drawer" class="notif-drawer hidden">
-    <div class="drawer-header">
-      <h3>Live Alerts</h3>
-      <button id="close-notif" class="icon-btn"><span class="material-icons-round">close</span></button>
-    </div>
-    <div class="drawer-content" id="notif-items">
-      </div>
-  </div>
-
-  <section id="hero" class="hero-section">
-    <div class="container hero-grid">
-      <div class="hero-text animate-up">
-        <div class="gov-badge-pill">
-          <span class="material-icons-round">verified</span> Verified Gov.in Resources
-        </div>
-        <h2>Discover Schemes For Which <span>You Are Eligible</span></h2>
-        <p>Instant access to Central and State benefits, financial scholarships, subsidies, and citizen initiatives.</p>
-        
-        <div class="search-engine-wrapper">
-          <div class="search-input-field">
-            <span class="material-icons-round search-icon">search</span>
-            <input type="text" id="smart-search" placeholder="Search Scheme Name, State, Category, Ministry..." autocomplete="off">
-            <button id="clear-search" class="hidden-element"><span class="material-icons-round">close</span></button>
-          </div>
-          <div id="autocomplete-box" class="autocomplete-dropdown hidden-element"></div>
-        </div>
-      </div>
-      
-      <div class="stats-card-grid animate-up">
-        <div class="stat-box glass">
-          <span class="material-icons-round text-gradient">groups</span>
-          <h3>100+</h3>
-          <p>Verified Schemes</p>
-        </div>
-        <div class="stat-box glass">
-          <span class="material-icons-round text-gradient">map</span>
-          <h3>36</h3>
-          <p>States & UTs Covered</p>
-        </div>
-        <div class="stat-box glass">
-          <span class="material-icons-round text-gradient">speed</span>
-          <h3>Realtime</h3>
-          <p>Eligibility Matching</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <main class="container main-content-layout" id="schemes-section">
-    
-    <aside class="sidebar-filters glass">
-      <h3><span class="material-icons-round">filter_alt</span> Refine by State</h3>
-      <div class="filter-group">
-        <select id="state-select-filter" aria-label="Select State or Union Territory">
-          </select>
-      </div>
-      
-      <hr class="divider">
-      
-      <h3>Categories</h3>
-      <div class="category-pill-stack" id="category-pills-container">
-        </div>
-    </aside>
-
-    <section class="schemes-display-panel">
-      <div class="display-panel-header">
-        <h2 id="current-view-title">All Available Schemes</h2>
-        <div class="view-tabs">
-          <button id="tab-all" class="tab-btn active">All</button>
-          <button id="tab-featured" class="tab-btn">Featured</button>
-          <button id="tab-trending" class="tab-btn">Trending</button>
-          <button id="tab-saved" class="tab-btn"><span class="material-icons-round">bookmark</span> Saved</button>
-        </div>
-      </div>
-
-      <div id="schemes-skeleton-container" class="schemes-grid hidden-element">
-        <div class="skeleton-card"></div>
-        <div class="skeleton-card"></div>
-        <div class="skeleton-card"></div>
-      </div>
-
-      <div id="schemes-card-container" class="schemes-grid"></div>
-      <div id="no-results" class="no-results-view hidden-element">
-        <span class="material-icons-round large-icon">find_in_page</span>
-        <h4>No matching schemes found</h4>
-        <p>Try broadening your filter categories, search terms, or check eligibility criteria inputs.</p>
-      </div>
-    </section>
-  </main>
-
-  <section id="eligibility-section" class="eligibility-engine-section">
-    <div class="container">
-      <div class="section-title text-center">
-        <h2>Smart Eligibility Matrix Checker</h2>
-        <p>Fill out the profile metrics below to dynamically view schemes custom-tailored to your exact profile background.</p>
-      </div>
-
-      <div class="engine-form-card glass">
-        <form id="eligibility-form" onsubmit="event.preventDefault();">
-          <div class="form-row-grid">
-            <div class="form-control">
-              <label for="elig-age">Your Age (Years)</label>
-              <input type="number" id="elig-age" min="1" max="120" value="25" required>
+    <!-- Navigation Core -->
+    <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 dark:bg-slate-900/80 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-xl font-black text-xl shadow-md tracking-wider">GS</div>
+                <div>
+                    <h1 class="text-md font-extrabold tracking-tight" id="nav-title">Government Schemes Portal</h1>
+                    <p class="text-[10px] text-slate-500 font-mono dark:text-slate-400">Official Directory Index</p>
+                </div>
             </div>
-            <div class="form-control">
-              <label for="elig-gender">Gender Identity</label>
-              <select id="elig-gender">
-                <option value="All">All / Other</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-            <div class="form-control">
-              <label for="elig-state">Current State / UT Residence</label>
-              <select id="elig-state">
+            
+            <div class="flex items-center gap-4">
+                <a href="eligibility.html" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-950/50 dark:hover:bg-indigo-900/50 rounded-xl transition-all">
+                    🎯 <span id="nav-eligibility">Check Eligibility</span>
+                </a>
+                <select id="lang-select" class="bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm font-medium px-2 py-1.5 cursor-pointer focus:ring-2 focus:ring-indigo-500">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
                 </select>
+                <button id="theme-toggle" aria-label="Toggle Layout Contrast" class="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-xl transition-colors text-lg">🌓</button>
             </div>
-            <div class="form-control">
-              <label for="elig-income">Annual Household Income (₹)</label>
-              <input type="number" id="elig-income" value="300000" min="0">
-            </div>
-          </div>
-
-          <div class="checkbox-options-grid">
-            <label class="check-container">
-              <input type="checkbox" id="elig-student">
-              <span class="checkmark"></span> Are you actively a student?
-            </label>
-            <label class="check-container">
-              <input type="checkbox" id="elig-farmer">
-              <span class="checkmark"></span> Are you engaged in farming/agriculture?
-            </label>
-          </div>
-
-          <div class="form-action-btn-wrapper">
-            <button type="button" id="btn-run-checker" class="primary-action-btn ripple">
-              <span class="material-icons-round">psychology</span> Run Eligibility Analysis
-            </button>
-            <button type="reset" id="btn-reset-checker" class="secondary-btn">Reset</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <section id="faq-section" class="faq-accordion-section">
-    <div class="container custom-narrow-container">
-      <div class="section-title text-center">
-        <h2>Frequently Answered Questions</h2>
-        <div class="faq-search-box">
-          <input type="text" id="faq-search-input" placeholder="Filter questions dynamically...">
         </div>
-      </div>
-      <div id="faq-accordion-target" class="faq-container-wrapper"></div>
+    </nav>
+
+    <!-- Hero Content Cluster -->
+    <header class="relative overflow-hidden bg-gradient-to-b from-indigo-50/50 via-transparent to-transparent dark:from-indigo-950/10 py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold text-indigo-700 bg-indigo-100 dark:text-indigo-300 dark:bg-indigo-900/40 rounded-full mb-4">
+                ✨ Centralized Database System
+            </span>
+            <h2 class="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight mb-4" id="hero-title">
+                Discover Public Schemes Instantly
+            </h2>
+            <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-8" id="hero-subtitle">
+                Access simplified parameters, required document check-lists, and direct pathways to official administrative application portals.
+            </p>
+
+            <!-- Search Interface Frame -->
+            <div class="bg-white dark:bg-slate-800 p-2 rounded-2xl shadow-xl border border-slate-200/60 dark:border-slate-700/60 max-w-2xl mx-auto flex flex-col sm:flex-row gap-2">
+                <div class="flex-1 flex items-center px-3 gap-2">
+                    <span class="text-slate-400 text-lg">🔍</span>
+                    <input type="text" id="global-search" placeholder="Type scheme name, ministry, or beneficiary category..." class="w-full bg-transparent border-none py-2 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none text-base">
+                </div>
+                <button id="search-trigger" class="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all transform active:scale-95" id="btn-search">
+                    Search
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Telemetry Counter Aggregations -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 mb-12">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white border border-slate-200 dark:bg-slate-800 dark:border-slate-700 rounded-2xl p-6 shadow-md text-center">
+            <div class="p-4 border-b sm:border-b-0 sm:border-r border-slate-100 dark:border-slate-700">
+                <p class="text-xs uppercase font-bold tracking-widest text-slate-400" id="stat-total">Total Indexed</p>
+                <p class="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-1" id="count-total">0</p>
+            </div>
+            <div class="p-4 border-b sm:border-b-0 sm:border-r border-slate-100 dark:border-slate-700">
+                <p class="text-xs uppercase font-bold tracking-widest text-slate-400" id="stat-central">Central Schemes</p>
+                <p class="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-1" id="count-central">0</p>
+            </div>
+            <div class="p-4 desert-padding">
+                <p class="text-xs uppercase font-bold tracking-widest text-slate-400" id="stat-state">State Managed</p>
+                <p class="text-3xl font-black text-amber-600 dark:text-amber-400 mt-1" id="count-state">0</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Primary Workspace Directory -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Filters Control Dashboard Sidebar -->
+            <aside class="w-full lg:w-1/4 shrink-0">
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm sticky top-24">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-black text-lg tracking-tight" id="filter-heading">Filters Directory</h3>
+                        <button id="filter-reset" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">Reset All</button>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 tracking-wider mb-2" id="lbl-origin">Administrative Scope</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button data-origin="CENTRAL" class="origin-btn p-2 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold transition-all">Central</button>
+                                <button data-origin="STATE" class="origin-btn p-2 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold transition-all">State</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 tracking-wider mb-2" id="lbl-state">Specific State Territory</label>
+                            <select id="filter-state" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                                <option value="">All States & UTs</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 tracking-wider mb-2" id="lbl-cat">Target Sector</label>
+                            <select id="filter-category" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                                <option value="">All Functional Sectors</option>
+                                <option value="Agriculture">Agriculture & Farmers</option>
+                                <option value="Education">Education & Scholarships</option>
+                                <option value="Business">Business & MSME</option>
+                                <option value="Health">Health & Social Welfare</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Dynamic Records Canvas -->
+            <section class="flex-1">
+                <div class="flex items-center justify-between mb-6">
+                    <p class="text-sm text-slate-500 font-medium" id="results-meta">Showing all records available</p>
+                </div>
+                
+                <!-- Interactive Destination Grid -->
+                <div id="schemes-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Synthesized JavaScript innerHTML injects cleanly here -->
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Global Compliance Footer Element -->
+    <footer class="bg-white border-t border-slate-200 dark:bg-slate-950 dark:border-slate-800 py-12 px-4">
+        <div class="max-w-7xl mx-auto text-center space-y-4">
+            <p class="text-xs text-slate-400 max-w-3xl mx-auto leading-relaxed" id="footer-disclaimer">
+                Disclaimer: This is an independent informational reference platform not affiliated with or operated by the Government of India. Users are permanently redirected out to authenticated governmental destination systems to transact or verify.
+            </p>
+            <div class="text-[10px] text-slate-500 font-mono">
+                System Standard Node Ref: CO-IN-2026-V1
+            </div>
+        </div>
+    </footer>
+
+    <!-- Intercepting Verification Security Modal Overlay Container -->
+    <div id="redirect-modal" class="fixed inset-0 z-50 invisible flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 opacity-0 transition-all duration-200">
+        <div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900 transition-transform transform scale-95 duration-200" id="modal-box">
+            <div class="flex items-start gap-3">
+                <div class="p-2 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl text-emerald-600 text-xl">🛡️</div>
+                <div>
+                    <h3 class="text-lg font-black text-slate-900 dark:text-white" id="modal-title">Security Routing Intercept</h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Government Domain Verification Routine</p>
+                </div>
+            </div>
+            
+            <hr class="my-4 border-slate-100 dark:border-slate-800">
+            
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed" id="modal-body-text">
+                You are leaving this informational dashboard and being securely routed directly out to the verified public domain infrastructure system:
+            </p>
+            
+            <div id="modal-target-url" class="my-4 rounded-xl bg-slate-50 border border-slate-100 p-3 font-mono text-xs text-emerald-600 dark:bg-slate-950 dark:border-slate-800 dark:text-emerald-400 break-all select-all">
+                https://sample.gov.in
+            </div>
+            
+            <div class="flex items-center justify-between mt-6">
+                <span id="modal-countdown" class="text-xs text-slate-400 font-medium">Auto-navigating in 5 seconds...</span>
+                <div class="flex gap-2">
+                    <button id="modal-cancel" class="rounded-xl bg-slate-100 px-4 py-2 text-xs font-bold text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors">Cancel</button>
+                    <a id="modal-proceed" target="_blank" rel="noopener noreferrer" class="rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white hover:bg-indigo-700 shadow-md transition-all">Proceed Immediately</a>
+                </div>
+            </div>
+        </div>
     </div>
-  </section>
 
-  <section class="disclaimer-alert-banner">
-    <div class="container code-disclaimer-wrapper">
-      <span class="material-icons-round warning-icon">gavel</span>
-      <p><strong>Disclaimer Notice:</strong> This is an independent open informational utility platform and is not affiliated with, authorized by, or managed by any Government authority. Users are transferred entirely to official government domains (.gov.in / .nic.in) to complete final transaction processing and official registrations.</p>
-    </div>
-  </section>
-
-  <button id="scroll-top-fab" class="fab-btn hidden-element" aria-label="Scroll to Top">
-    <span class="material-icons-round">arrow_upward</span>
-  </button>
-
-  <div id="toast-notification-system" class="toast-wrapper"></div>
-
-  <footer class="premium-portal-footer">
-    <div class="container footer-grid-system">
-      <div class="footer-brand-column">
-        <h3>SchemesGov</h3>
-        <p>A beautiful unified accessibility hub optimizing modern delivery profiles to complex government structural architectures.</p>
-      </div>
-      <div class="footer-links-column">
-        <h4>System Links</h4>
-        <a href="#hero">Homepage Hub</a>
-        <a href="#schemes-section">Schemes Explorer</a>
-        <a href="#eligibility-section">Diagnostic Engine</a>
-      </div>
-      <div class="footer-legal-column">
-        <h4>Legal Architecture</h4>
-        <p>All data sets compiled via verified Public domain structures. Domain links checked automatically via cross-reference stacks.</p>
-      </div>
-    </div>
-    <div class="footer-bottom-bar text-center">
-      <p>&copy; 2026 SchemesGov. Crafted with vanilla architecture guidelines for maximized performance speed metrics.</p>
-    </div>
-  </footer>
-
-  <script src="data.js"></script>
-  <script src="script.js"></script>
+    <!-- Initialization Execution Logic Script -->
+    <script src="app.js"></script>
 </body>
 </html>

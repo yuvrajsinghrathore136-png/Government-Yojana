@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Eligibility Checker | Public Schemes</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="design.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+
+    <nav class="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="text-sm font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1">← Return to Main Directory</a>
+            <span class="text-xs font-mono text-slate-400">Parameter Sandbox v1.1</span>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-12">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-black tracking-tight" id="elig-title">Smart Eligibility Matrix</h2>
+            <p class="text-sm text-slate-500 max-w-md mx-auto mt-2">Adjust personal matrices locally below to extract context-matching schemes.</p>
+        </div>
+
+        <form id="eligibility-form" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl rounded-2xl p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-400 tracking-wider mb-2">Age Target Value</label>
+                <input type="number" id="elig-age" placeholder="e.g. 28" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-400 tracking-wider mb-2">Gender Identification</label>
+                <select id="elig-gender" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500">
+                    <option value="ALL">All Genders</option>
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-400 tracking-wider mb-2">State Territory Baseline</label>
+                <select id="elig-state" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500">
+                    <option value="">Select State</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-400 tracking-wider mb-2">Annual Household Income Threshold (₹)</label>
+                <input type="number" id="elig-income" placeholder="e.g. 250000" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <div class="sm:col-span-2 flex items-center gap-3 py-2 border-t border-slate-100 dark:border-slate-700 mt-2">
+                <input type="checkbox" id="elig-pwd" class="h-5 w-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 accent-indigo-600">
+                <label htmlFor="elig-pwd" class="text-sm font-semibold text-slate-600 dark:text-slate-300 select-none">Belongs to Person with Disability (PwD) Category</label>
+            </div>
+
+            <button type="submit" class="sm:col-span-2 w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all transform active:scale-98">
+                Compute Matching Criteria Matrix
+            </button>
+        </form>
+
+        <!-- Evaluation Results Node -->
+        <div id="eligibility-results" class="mt-12 hidden">
+            <h3 class="text-xl font-black mb-6 tracking-tight flex items-center gap-2">
+                <span>🎯</span> Computed System Match Recommendations
+            </h3>
+            <div id="elig-schemes-container" class="grid grid-cols-1 sm:grid-cols-2 gap-6"></div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
