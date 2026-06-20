@@ -1,5 +1,5 @@
 // ==========================================
-// DUMMY DATA STRUCTURES (Simulating API JSON Data)
+// 1. DATA STRUCTURE MODULES (JSON Placeholders)
 // ==========================================
 
 const schemesData = [
@@ -73,21 +73,117 @@ const newsData = [
 ];
 
 // ==========================================
-// RENDERING ENGINES
+// 2. LOGIC CONTROLLER (Filter, Highlight, Auto-Scroll)
 // ==========================================
 
-function displaySchemes(schemes) {
+let searchDebounceTimeout;
+
+// Safeguarded text node highlight processor
+function highlightText(text, query) {
+    if (!query) return text;
+    const regex = new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+    return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+}
+
+function filterContent() {
+    const searchInput = document.getElementById('main-search');
+    const clearBtn = document.getElementById('clear-search');
+    const previewDisplay = document.getElementById('search-preview-display');
+    
+    const searchQuery = searchInput.value.toLowerCase().trim();
+    const rawSearchValue = searchInput.value;
+    const activeCategory = document.querySelector('#categoryFilter .active').getAttribute('data-category');
+
+    if (clearBtn) {
+        clearBtn.style.display = searchQuery.length > 0 ? 'block' : 'none';
+    }
+
+    // Filter Scheme Cards Matrix
+    const filteredSchemes = schemesData.filter(scheme => {
+        const matchesSearch = scheme.name.toLowerCase().includes(searchQuery) ||
+                              scheme.ministry.toLowerCase().includes(searchQuery) ||
+                              scheme.category.toLowerCase().includes(searchQuery) ||
+                              scheme.description.toLowerCase().includes(searchQuery);
+        
+        const matchesCategory = (activeCategory === 'all') || 
+                                (scheme.category.toLowerCase() === activeCategory.toLowerCase());
+        
+        return matchesSearch && matchesCategory;
+    });
+
+    // Filter Directory Grid Matrix
+    const filteredDirectory = directoryData.filter(site => {
+        return site.name.toLowerCase().includes(searchQuery) || 
+               site.description.toLowerCase().includes(searchQuery);
+    });
+
+    // Synchronize Real-time Preview Banner
+    const totalMatches = filteredSchemes.length + filteredDirectory.length;
+    if (previewDisplay) {
+        if (searchQuery.length > 0) {
+            previewDisplay.innerHTML = `
+                <div class="search-monitor-banner glass-card">
+                    <p>
+                        <i class="fa-solid fa-keyboard" style="margin-right: 8px; opacity: 0.7;"></i>
+                        Active Search: <span class="live-term">"${rawSearchValue}"</span>
+                    </p>
+                    <span class="match-badge">${totalMatches} results found</span>
+                </div>
+            `;
+        } else {
+            previewDisplay.innerHTML = '';
+        }
+    }
+
+    renderHighlightedSchemes(filteredSchemes, searchQuery);
+    renderHighlightedDirectory(filteredDirectory, searchQuery);
+}
+
+// Debounce wrapper managing visual states and the auto-scroll mechanic
+function handleSearchInput() {
+    const searchContainer = document.querySelector('.search-container');
+    if (searchContainer) {
+        searchContainer.classList.add('is-searching');
+    }
+    
+    clearTimeout(searchDebounceTimeout);
+    searchDebounceTimeout = setTimeout(() => {
+        filterContent();
+        
+        if (searchContainer) {
+            searchContainer.classList.remove('is-searching');
+        }
+
+        // --- AUTO-SCROLL EXECUTION NODE ---
+        const searchInput = document.getElementById('main-search');
+        const previewDisplay = document.getElementById('search-preview-display');
+        
+        if (searchInput && searchInput.value.trim().length > 0 && previewDisplay) {
+            previewDisplay.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }
+    }, 550); // Balanced latency window allowing non-disruptive mid-word typing pauses
+}
+
+// ==========================================
+// 3. UI RENDERING ENGINES
+// ==========================================
+
+function renderHighlightedSchemes(schemes, query) {
     const grid = document.getElementById('schemes-grid');
+    if (!grid) return;
     grid.innerHTML = schemes.length ? '' : `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">No schemes match your criteria.</p>`;
     
     schemes.forEach(scheme => {
         const card = document.createElement('div');
         card.className = 'card glass-card';
         card.innerHTML = `
-            <span class="category-tag">${scheme.category}</span>
-            <h3>${scheme.name}</h3>
-            <span class="ministry-tag">${scheme.ministry}</span>
-            <p>${scheme.description}</p>
+            <span class="category-tag">${highlightText(scheme.category, query)}</span>
+            <h3>${highlightText(scheme.name, query)}</h3>
+            <span class="ministry-tag">${highlightText(scheme.ministry, query)}</span>
+            <p>${highlightText(scheme.description, query)}</p>
             <div class="details-box">
                 <strong>Eligibility:</strong> ${scheme.eligibility}<br><br>
                 <strong>Benefits:</strong> ${scheme.benefits}
@@ -98,8 +194,9 @@ function displaySchemes(schemes) {
     });
 }
 
-function displayDirectory(sites) {
+function renderHighlightedDirectory(sites, query) {
     const grid = document.getElementById('directory-grid');
+    if (!grid) return;
     grid.innerHTML = sites.length ? '' : `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">No matching platforms found.</p>`;
     
     sites.forEach(site => {
@@ -108,8 +205,8 @@ function displayDirectory(sites) {
         card.className = 'card glass-card';
         card.innerHTML = `
             <div class="directory-logo">${initial}</div>
-            <h3>${site.name}</h3>
-            <p>${site.description}</p>
+            <h3>${highlightText(site.name, query)}</h3>
+            <p>${highlightText(site.description, query)}</p>
             <a href="${site.url}" target="_blank" class="btn">Open Platform</a>
         `;
         grid.appendChild(card);
@@ -118,6 +215,7 @@ function displayDirectory(sites) {
 
 function displayNews() {
     const container = document.getElementById('news-container');
+    if (!container) return;
     container.innerHTML = '';
     newsData.forEach(item => {
         const div = document.createElement('div');
@@ -133,104 +231,100 @@ function displayNews() {
 }
 
 // ==========================================
-// LIVE SEARCH & FILTER CONTROLLER
-// ==========================================
-
-function filterContent() {
-    const searchQuery = document.getElementById('main-search').value.toLowerCase();
-    const activeCategory = document.querySelector('#categoryFilter .active').getAttribute('data-category');
-
-    // Filter Schemes
-    const filteredSchemes = schemesData.filter(scheme => {
-        const matchesSearch = scheme.name.toLowerCase().includes(searchQuery) ||
-                              scheme.ministry.toLowerCase().includes(searchQuery) ||
-                              scheme.category.toLowerCase().includes(searchQuery);
-        
-        const matchesCategory = (activeCategory === 'all') || 
-                                (scheme.category.toLowerCase() === activeCategory.toLowerCase());
-        
-        return matchesSearch && matchesCategory;
-    });
-
-    // Filter Directory
-    const filteredDirectory = directoryData.filter(site => {
-        return site.name.toLowerCase().includes(searchQuery) || site.description.toLowerCase().includes(searchQuery);
-    });
-
-    displaySchemes(filteredSchemes);
-    displayDirectory(filteredDirectory);
-}
-
-// ==========================================
-// INTERFACE EVENT LISTENERS
+// 4. LIFECYCLE INITIALIZATION LISTENERS
 // ==========================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initial Render
-    displaySchemes(schemesData);
-    displayDirectory(directoryData);
     displayNews();
+    filterContent(); 
 
-    // Live Search Trigger
-    document.getElementById('main-search').addEventListener('input', filterContent);
+    const searchInput = document.getElementById('main-search');
+    const clearBtn = document.getElementById('clear-search');
 
-    // Sidebar Category Filter Trigger
+    if (searchInput) {
+        searchInput.addEventListener('input', handleSearchInput);
+    }
+
+    if (clearBtn && searchInput) {
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            filterContent();
+            searchInput.focus();
+        });
+    }
+
     const categories = document.querySelectorAll('#categoryFilter li');
     categories.forEach(item => {
         item.addEventListener('click', () => {
             categories.forEach(c => c.classList.remove('active'));
             item.classList.add('active');
             filterContent();
+            
+            // Force contextual layout adjustment on category filter selections
+            const previewDisplay = document.getElementById('search-preview-display');
+            if (previewDisplay) {
+                previewDisplay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
     });
 
-    // Dark/Light Theme Switching Engine
     const themeToggle = document.getElementById('theme-toggle');
-    themeToggle.addEventListener('click', () => {
-        const currentTheme = document.body.getAttribute('data-theme');
-        if (currentTheme === 'dark') {
-            document.body.removeAttribute('data-theme');
-            themeToggle.innerHTML = `<i class="fa-solid fa-moon"></i>`;
-        } else {
-            document.body.setAttribute('data-theme', 'dark');
-            themeToggle.innerHTML = `<i class="fa-solid fa-sun"></i>`;
-        }
-    });
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeToggle.innerHTML = `<i class="fa-solid fa-moon"></i>`;
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = `<i class="fa-solid fa-sun"></i>`;
+            }
+        });
+    }
 
-    // Mobile Navigation Slide Drawer Toggle
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
-    menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
 
-    // Accordion Expansion Mechanics
     const faqItems = document.querySelectorAll('.faq-item');
     faqItems.forEach(item => {
-        item.querySelector('.faq-question').addEventListener('click', () => {
-            const isOpen = item.classList.contains('open');
-            faqItems.forEach(i => i.classList.remove('open'));
-            if (!isOpen) item.classList.add('open');
-        });
-    });
-
-    // Scroll To Top Execution Node
-    const topBtn = document.getElementById('scrollToTop');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            topBtn.classList.add('show');
-        } else {
-            topBtn.classList.remove('show');
+        const question = item.querySelector('.faq-question');
+        if (question) {
+            question.addEventListener('click', () => {
+                const isOpen = item.classList.contains('open');
+                faqItems.forEach(i => i.classList.remove('open'));
+                if (!isOpen) item.classList.add('open');
+            });
         }
     });
-    topBtn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
 
-    // Handle Dummy Contact Form Submission
-    document.getElementById('contactForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('Thank you! Your query has been logged successfully inside our placeholder context.');
-        e.target.reset();
+    const topBtn = document.getElementById('scrollToTop');
+    window.addEventListener('scroll', () => {
+        if (topBtn) {
+            if (window.scrollY > 300) {
+                topBtn.classList.add('show');
+            } else {
+                topBtn.classList.remove('show');
+            }
+        }
     });
+    
+    if (topBtn) {
+        topBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Form processing complete within static dashboard context boundaries.');
+            e.target.reset();
+        });
+    }
 });

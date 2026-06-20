@@ -12,9 +12,20 @@
     <header class="glass-nav">
         <div class="nav-container">
             <a href="#" class="logo">
-                <i class="fa-solid fa-building-columns"></i>
-                <span>GovPortal</span>
+                <div class="emblem-wrapper">
+                    <svg viewBox="0 0 24 35" width="24" height="35" fill="currentColor" class="national-emblem-svg">
+                        <path d="M12 2C10.5 2 9.5 3 9.5 4.5C9.5 5.5 10 6 11 6.5V9.2C8 9.5 6 11.5 6 14.5C6 16.5 7 18 8.5 19V22.5C7.5 23 7 24 7 25C7 26.5 8.5 28 10 28H14C15.5 28 17 26.5 17 25C17 24 16.5 23 15.5 22.5V19C17 18 18 16.5 18 14.5C18 11.5 16 9.5 13 9.2V6.5C14 6 14.5 5.5 14.5 4.5C14.5 3 13.5 2 12 2Z"/>
+                        <circle cx="12" cy="31" r="2.5" fill="#000088"/>
+                    </svg>
+                    <div class="emblem-text">
+                        <span class="hindi-text">भारत सरकार</span>
+                        <span class="eng-text">GOVT. OF INDIA</span>
+                    </div>
+                </div>
+                <div class="brand-divider"></div>
+                <span class="portal-title">GovPortal</span>
             </a>
+            
             <nav class="nav-links" id="navLinks">
                 <a href="#hero" class="active">Home</a>
                 <a href="#quick-services">Services</a>
@@ -35,19 +46,41 @@
         </div>
     </header>
 
-    <section id="hero" class="hero-section">
-        <div class="hero-content">
-            <h1>Single Window Access to Government Services</h1>
-            <p>Discover national schemes, track official directories, and access essential services instantly.</p>
+   <section id="hero" class="hero-section">
+        <div class="official-emblem-container">
+    <div class="emblem-graphic-side">
+        <svg viewBox="0 0 24 35" width="45" height="60" fill="currentColor">
+            <path d="M12 2C10.5 2 9.5 3 9.5 4.5C9.5 5.5 10 6 11 6.5V9.2C8 9.5 6 11.5 6 14.5C6 16.5 7 18 8.5 19V22.5C7.5 23 7 24 7 25C7 26.5 8.5 28 10 28H14C15.5 28 17 26.5 17 25C17 24 16.5 23 15.5 22.5V19C17 18 18 16.5 18 14.5C18 11.5 16 9.5 13 9.2V6.5C14 6 14.5 5.5 14.5 4.5C14.5 3 13.5 2 12 2Z"/>
+            <circle cx="12" cy="31" r="2.5"/>
+        </svg>
+        <span class="emblem-base-text">सत्यमेव जयते</span>
+    </div>
+    
+    <div class="emblem-tricolor-divider">
+        <div class="orange-bar"></div>
+        <div class="green-bar"></div>
+    </div>
+    
+    <div class="emblem-typography-side">
+        <div class="hindi-row">भारत सरकार</div>
+        <div class="english-row">GOVERNMENT</div>
+        <div class="sub-english-row">OF <span class="blue-text">INDIA</span></div>
+    </div>
+</div>
+            <h1>YOUR GOVERNMENT IN YOUR HANDS</h1>
+            <p>Access Essential Services Instantly.</p>
             
             <div class="search-container glass-card">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="main-search" placeholder="Search by scheme, website, ministry, or category...">
+                <input type="text" id="main-search" placeholder="Search by scheme, website, ministry, or category..." autocomplete="off">
+                <button id="clear-search" class="clear-btn" aria-label="Clear search" style="display: none;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
         </div>
     </section>
 
-    <section id="quick-services" class="container">
+ <section id="quick-services" class="container">
         <h2 class="section-title">Quick Services</h2>
         <div class="services-grid">
             <a href="https://uidai.gov.in" target="_blank" class="service-item glass-card">
@@ -103,9 +136,7 @@
                 <li data-category="Healthcare">Healthcare</li>
                 <li data-category="Employment">Jobs & Employment</li>
                 <li data-category="Business">Business & Startups</li>
-                <li data-category="Women">Women Empowerment</li>
-                <li data-category="Pension">Pension & Senior Citizens</li>
-                <li data-category="Housing">Housing</li>
+            
             </ul>
         </aside>
 
@@ -123,6 +154,23 @@
             </section>
         </div>
     </main>
+    <section id="MADHYA-PRADESH SERVICES" class="container">
+        <h2 class="section-title">MADHYA-PRADESH SERVICES</h2>
+        <div class="services-grid">
+            <a href="https://mp.gov.in/govschemes" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-id-card"></i>
+                <span> MP Government Schemes Portal</span>
+            </a>
+            <a href="https://www.myscheme.gov.in/search/state/Madhya%20Pradesh" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-credit-card"></i>
+                <span>myScheme Madhya Pradesh</span>
+            </a>
+            <a href="https://www.services.mp.gov.in/eservice" target="_blank" class="service-item glass-card">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>E-Services</E-Services></span>
+            </a>
+        </div>
+    </section>
 
     <section id="news" class="container">
         <h2 class="section-title">Latest Government News</h2>
@@ -186,7 +234,7 @@
                 <h3>Official Touchpoints</h3>
                 <p><i class="fa-solid fa-phone"></i> National Helpline: <strong>1800-111-400</strong></p>
                 <p><i class="fa-solid fa-envelope"></i> Email: <strong>support-portal@gov.in</strong></p>
-                <p><i class="fa-solid fa-building"></i> Ministry of Electronics & IT, New Delhi, India</p>
+                <p><i class="fa-solid fa-building"></i> All Ministry ofIndia</p>
                 <div class="emergency-box">
                     <h4>Emergency Numbers</h4>
                     <ul>

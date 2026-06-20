@@ -499,3 +499,165 @@ footer {
     .menu-toggle { display: block; }
     .hero-content h1 { font-size: 2rem; }
 }
+/* --- Government Emblem Structural Styling --- */
+.emblem-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.national-emblem-svg {
+    color: #9f1239; /* राष्ट्रीय प्रतीक के लिए ट्रेडिशनल डीप क्रिमसन/अशोक स्तंभ रंग */
+    transition: color 0.3s ease;
+}
+
+[data-theme="dark"] .national-emblem-svg {
+    color: #f1f5f9; /* डार्क मोड में लोगो क्लियर दिखने के लिए लाइट शेड */
+}
+
+.emblem-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.1;
+}
+
+.emblem-text .hindi-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #de5b10; /* सैफ्रॉन (भगवा) रंग */
+}
+
+.emblem-text .eng-text {
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: #0b6623; /* भारतीय ग्रीन रंग */
+}
+
+[data-theme="dark"] .emblem-text .hindi-text,
+[data-theme="dark"] .emblem-text .eng-text {
+    color: #cbd5e1; /* डार्क मोड में बेहतर विजिबिलिटी */
+}
+
+/* लोगो और पोर्टल नेम के बीच का डिवाइडर */
+.brand-divider {
+    width: 1px;
+    height: 30px;
+    background: var(--text-muted);
+    opacity: 0.4;
+    margin: 0 5px;
+}
+
+.portal-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #de5b10 0%, #072a56 50%, #0b6623 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme="dark"] .portal-title {
+    background: linear-gradient(90deg, #ff9933 0%, #38bdf8 50%, #4ade80 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+/* --- Centered Custom Emblem Alignment Styles --- */
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Forces total center alignment across the block */
+}
+
+.official-emblem-container {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 12px 22px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="dark"] .official-emblem-container {
+    background: rgba(15, 23, 42, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.emblem-graphic-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #1e293b;
+}
+
+[data-theme="dark"] .emblem-graphic-side {
+    color: #f1f5f9;
+}
+
+.emblem-base-text {
+    font-size: 0.65rem;
+    font-weight: 700;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+}
+
+.emblem-tricolor-divider {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 65px;
+    width: 4px;
+    margin: 0 18px;
+}
+
+.emblem-tricolor-divider .orange-bar {
+    height: 40%;
+    width: 100%;
+    background-color: #ff9933;
+    border-radius: 2px;
+}
+
+.emblem-tricolor-divider .green-bar {
+    height: 40%;
+    width: 100%;
+    background-color: #128807;
+    border-radius: 2px;
+}
+
+.emblem-typography-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    font-family: Arial, sans-serif;
+    color: #000000;
+}
+
+[data-theme="dark"] .emblem-typography-side {
+    color: #ffffff;
+}
+
+.emblem-typography-side .hindi-row {
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.emblem-typography-side .english-row,
+.emblem-typography-side .sub-english-row {
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: 0.5px;
+}
+
+.emblem-typography-side .blue-text {
+    color: #000088;
+    font-weight: 700;
+}
+
+[data-theme="dark"] .emblem-typography-side .blue-text {
+    color: #38bdf8;
+}
